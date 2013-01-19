@@ -6,7 +6,6 @@ import pystache
 
 from rsdb_web import app, db
 from models import *
-import send
 import json
 
 from flask.ext.wtf import Form, TextField, BooleanField, Required
