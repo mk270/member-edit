@@ -12,10 +12,12 @@ class Person(db.Model):
     birth_year = db.Column('birthyear', db.Integer)
     postcode = db.Column(db.String(8))
     city = db.Column(db.String(45))
+    notes = db.Column(db.Text)
 
     def __init__(self, id, name, email, 
                  telno, no_more_email,
-                 birth_year, postcode, city):
+                 birth_year, postcode, city,
+                 notes):
         self.id = id
         self.name = name
         self.email = email
@@ -24,6 +26,7 @@ class Person(db.Model):
         self.birth_year = birth_year
         self.postcode = postcode
         self.city = city
+        self.notes = notes
 
     def __repr__(self):
         return '<Person %r>' % self.id
@@ -37,5 +40,6 @@ class Person(db.Model):
             "no_more_email": self.no_more_email,
             "birth_year": self.birth_year,
             "postcode": self.postcode,
-            "city": self.city
+            "city": self.city,
+            "notes": self.notes
             }
