@@ -70,3 +70,10 @@ def people():
             "people_list": True,
             "person": [ i.to_dict() for i in Person.query.all() ]
             })
+
+@app.route('/centres')
+def centres():
+    return render({
+            "centre_list": True,
+            "centre": [ i.to_dict() for i in Centre.query.all() ]
+            })
