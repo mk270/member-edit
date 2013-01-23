@@ -1,0 +1,7 @@
+[server]
+secret_key: 2-49ru0g9hqwghqwghqj420hj240hq40fqh4q2fs
+htpasswd_file: htpasswd
+http_auth_realm: Rewired State DB
+
+[database]
+db_name: rewired_state

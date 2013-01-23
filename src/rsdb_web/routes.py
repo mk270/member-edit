@@ -8,18 +8,9 @@ import pystache
 from rsdb_web import app, db
 from models import *
 import json
-import os
 
 from flask.ext.wtf import Form, TextField, BooleanField, Required
 from wtforms.ext.sqlalchemy.orm import model_form
-
-htpasswd_file = 'htpasswd'
-auth_realm = 'Rewired State DB'
-HTPASSWD = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                        htpasswd_file)
-
-app.config['HTAUTH_HTPASSWD_PATH'] = HTPASSWD
-app.config['HTAUTH_REALM'] = auth_realm
 
 auth = htauth.HTAuth(app)
 
