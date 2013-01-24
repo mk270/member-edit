@@ -1,3 +1,10 @@
+#  MemberEdit, a basic web interface for running member lists, by Martin Keegan
+
+#  Copyright (C) 2013  Martin Keegan
+#
+#  This programme is free software; you may redistribute and/or modify
+#  it under the terms of the Apache Software Licence v2.0
+
 import sys
 
 from flask import request, render_template, flash, redirect, url_for, get_flashed_messages, Flask, g
