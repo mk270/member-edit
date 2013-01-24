@@ -25,6 +25,7 @@ def render(data):
     data['messages'] = (len(messages) > 0)
     data['message'] = [ { 'message_text': m } for m in messages ]
     template = file('static/index.html').read() # don't cache this, really
+    data['application_name'] = app.config['X-NAME']
     return pystache.render(template, data)
 
 @app.route("/save-person/<person_id>", methods=['POST'])
