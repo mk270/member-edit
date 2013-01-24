@@ -18,17 +18,22 @@ from flask import Flask
 
 from flask.ext.sqlalchemy import SQLAlchemy
 
-db_name = "rewired_state"
 app = Flask(__name__.split('.')[0])
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///%s' % db_name
-app.secret_key = "66ca9513726c745a1e7d546bc67e9adc6994ff08"
 db = SQLAlchemy(app)
 
 import routes
 
-def start():
+import os
+
+def start(config):
+    db_name       = config.get('database', 'db_name')
+    htpasswd_file = config.get('server', 'htpasswd_file')
+    auth_realm    = config.get('server', 'http_auth_realm')
+    secret_key    = config.get('server', 'secret_key')
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///%s' % db_name
+    app.config['HTAUTH_REALM'] = auth_realm
+    app.config['HTAUTH_HTPASSWD_PATH'] = htpasswd_file
+    app.secret_key = secret_key
 
     app.run(debug=True)
-
-if __name__ == '__main__':
-    start()
