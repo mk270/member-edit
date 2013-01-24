@@ -1,15 +1,27 @@
 import sys
 
-from flask import request, render_template, flash, redirect, url_for, get_flashed_messages
+from flask import request, render_template, flash, redirect, url_for, get_flashed_messages, Flask, g
+from flask.ext import htauth
 
 import pystache
 
 from rsdb_web import app, db
 from models import *
 import json
+import os
 
 from flask.ext.wtf import Form, TextField, BooleanField, Required
 from wtforms.ext.sqlalchemy.orm import model_form
+
+htpasswd_file = 'htpasswd'
+auth_realm = 'Rewired State DB'
+HTPASSWD = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                        htpasswd_file)
+
+app.config['HTAUTH_HTPASSWD_PATH'] = HTPASSWD
+app.config['HTAUTH_REALM'] = auth_realm
+
+auth = htauth.HTAuth(app)
 
 class MyForm(Form):
     name = TextField('Name')
@@ -25,6 +37,7 @@ def render(data):
     return pystache.render(template, data)
 
 @app.route("/save-person/<person_id>", methods=['POST'])
+@htauth.authenticated
 def save(person_id):
     person = Person.query.filter(Person.id==person_id).first()
     person.name = request.form['name']
@@ -42,6 +55,7 @@ def save(person_id):
     return redirect('/person/%s' % person_id)
 
 @app.route("/edit/<person_id>")
+@htauth.authenticated
 def edit(person_id):
     model = Person.query.filter(Person.id==person_id).first()
     form = MyForm(request.form, model, csrf_enabled=False)
@@ -57,6 +71,7 @@ def edit(person_id):
             })
 
 @app.route('/person/<person_id>')
+@htauth.authenticated
 def person(person_id):
     return render({
             "person_details": True,
@@ -65,6 +80,7 @@ def person(person_id):
 
 
 @app.route('/')
+@htauth.authenticated
 def people():
     return render({
             "people_list": True,
