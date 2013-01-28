@@ -6,6 +6,7 @@
 #  it under the terms of the Apache Software Licence v2.0
 
 from rsdb_web import db
+import phonenum
 
 class Person(db.Model):
     __tablename__ = "people"
@@ -50,7 +51,7 @@ class Person(db.Model):
         return { 
             "name": self.name,
             "email": hash_or_null("email_address", self.email),
-            "telno": self.telno,
+            "telno": phonenum.canonicalise(self.telno),
             "id": self.id,
             "no_more_email": self.no_more_email,
             "birth_year": self.birth_year,
