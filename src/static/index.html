@@ -76,7 +76,11 @@
 			<td><a href="/person/{{ id }}">View</a></td>
 			<td><a href="/edit/{{ id }}">Edit</a></td>
 			<td>{{ name }}</td>
-			<td>{{ email }}</td>
+			<td>
+			  {{ #email }}
+			  {{ email_address }}
+			  {{ /email }}
+			</td>
 			<td>{{ telno }}</td>
 		  </tr>
 		  {{ /person }}
