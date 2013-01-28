@@ -95,6 +95,20 @@
 		<tr><td>Postcode</td><td>{{ postcode }}</td></tr>
 		<tr><td>City</td><td>{{ city }}</td></tr>
 		<tr><td>Notes</td><td>{{ notes }}</td></tr>
+		<tr>
+		  <td>Github</td>
+		  <td>{{ #github }}
+			<a href="https://github.com/{{ github_id }}">{{ github_id }}</a>
+			{{ /github }}
+		  </td>
+		</tr>
+		<tr>
+		  <td>Twitter</td>
+		  <td>{{ #twitter }}
+			<a href="http://twitter.com/{{ twitter_id }}">@{{ twitter_id }}</a>
+			{{ /twitter }}
+		  </td>
+		</tr>
 	  </table>
 
 	  <form action="/edit/{{ id }}" method="GET">
