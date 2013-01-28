@@ -49,7 +49,7 @@ class Person(db.Model):
                 return [ { field_name : s } ]
         return { 
             "name": self.name,
-            "email": self.email,
+            "email": hash_or_null("email_address", self.email),
             "telno": self.telno,
             "id": self.id,
             "no_more_email": self.no_more_email,
