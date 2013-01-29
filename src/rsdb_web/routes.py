@@ -103,6 +103,7 @@ def people():
     return render(data)
 
 @app.route('/centres')
+@htauth.authenticated
 def centres():
     return render({
             "centre_list": True,
