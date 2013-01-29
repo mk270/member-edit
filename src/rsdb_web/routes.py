@@ -81,8 +81,23 @@ def person(person_id):
 @app.route('/')
 @htauth.authenticated
 def people():
-    return render({
+    order_str = request.args.get('order', None)
+
+    orders = {
+        "name": Person.name,
+        "id": Person.id,
+        "email": Person.email,
+        "phone": Person.telno
+        }
+
+    if order_str not in orders:
+        q = Person.query.all()
+    else:
+        q = Person.query.order_by(orders[order_str])
+
+    data = {
             "people_list": True,
             "person_count": Person.query.count(),
-            "person": [ i.to_dict() for i in Person.query.all() ]
-            })
+            "person": [ i.to_dict() for i in q ]
+            }
+    return render(data)
