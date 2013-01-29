@@ -74,7 +74,7 @@ def edit(person_id):
 def person(person_id):
     return render({
             "person_details": True,
-            "person": Person.query.filter(Person.id==person_id).first()
+            "person": Person.query.filter(Person.id==person_id).first().to_dict()
             })
 
 
@@ -83,6 +83,7 @@ def person(person_id):
 def people():
     return render({
             "people_list": True,
+            "person_count": Person.query.count(),
             "person": [ i.to_dict() for i in Person.query.all() ]
             })
 
