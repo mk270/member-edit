@@ -65,3 +65,30 @@ class Person(db.Model):
             "github":  hash_or_null("github_id",  self.github_id),
             "twitter": hash_or_null("twitter_id", self.twitter_id)
             }
+
+
+
+class Centre(db.Model):
+    __tablename__ = "centre"
+
+    id = db.Column(db.Integer, primary_key=True)
+    city = db.Column(db.String(45))
+    name = db.Column(db.String(45))
+    email = db.Column("contactemail", db.String(90))
+
+    def __init__(self, id, city, name, email):
+        self.id = id
+        self.city = city
+        self.name = name
+        self.email = email
+
+    def __repr__(self):
+        return '<Centre %r>' % self.id
+
+    def to_dict(self):
+        return { 
+            "name": self.name,
+            "email": self.email,
+            "id": self.id,
+            "city": self.city
+            }
