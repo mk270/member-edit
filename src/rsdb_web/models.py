@@ -25,12 +25,13 @@ class Person(db.Model):
     mainly_a = db.Column(db.String(50))
     availability = db.Column(db.String(50))
     age = db.Column(db.Integer)
+    mentor = db.Column(db.Boolean)
     
     def __init__(self, id, name, email, 
                  telno, no_more_email,
                  birth_year, postcode, city,
                  notes, github_id, twitter_id,
-                 mainly_a, availability):
+                 mainly_a, availability, mentor):
         self.id = id
         self.name = name
         self.email = email
@@ -44,6 +45,7 @@ class Person(db.Model):
         self.twitter_id = twitter_id
         self.mainly_a = mainly_a
         self.availability = availability
+        self.mentor = mentor
 
     def __repr__(self):
         return '<Person %r>' % self.id
@@ -69,6 +71,8 @@ class Person(db.Model):
         def format_age(a):
             if isinstance(a, float): return int(a)
             return "Unknown"
+        def format_bool_true(b):
+            return bool(b)
         return { 
             "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
@@ -84,7 +88,8 @@ class Person(db.Model):
                                     canonicalise_twitter_id(self.twitter_id)),
             "mainly_a": self.mainly_a,
             "availability": self.availability,
-            "age": format_age(self.age)
+            "age": format_age(self.age),
+            "mentor": format_bool_true(self.mentor)
             }
 
 
