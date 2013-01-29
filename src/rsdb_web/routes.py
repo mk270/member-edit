@@ -88,7 +88,7 @@ def people():
         "name": cls.name,
         "id": cls.id,
         "email": cls.email,
-        "phone": cls.telno
+        "telno": cls.telno
         }
 
     order_str = request.args.get('order', None)
