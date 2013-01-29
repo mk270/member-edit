@@ -48,8 +48,12 @@ class Person(db.Model):
                 return []
             else:
                 return [ { field_name : s } ]
+        def title_or_none(s):
+            if s is None:
+                return None
+            return s.title()
         return { 
-            "name": self.name,
+            "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
             "telno": phonenum.canonicalise(self.telno),
             "id": self.id,
