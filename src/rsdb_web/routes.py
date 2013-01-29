@@ -88,10 +88,13 @@ def make_list(cls, cls_name, order_keys):
         q = cls.query.order_by(orders[order_str])
 
     data = {
-            (cls_name + "_list"): True,
-            (cls_name + "_count"): cls.query.count(),
-             cls_name: [ i.to_dict() for i in q ]
-            }
+        (cls_name + "_list"): True,
+        "summary": { 
+            "table_name": cls_name.title(),
+            "count": cls.query.count() 
+            },
+        cls_name: [ i.to_dict() for i in q ]
+        }
     return render(data)
 
 @app.route('/')
