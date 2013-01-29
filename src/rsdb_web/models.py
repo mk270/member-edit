@@ -65,6 +65,9 @@ class Person(db.Model):
         def none_to_null(s):
             if s is None: return ""
             return s
+        def format_age(a):
+            if isinstance(a, float): return int(a)
+            return "Unknown"
         return { 
             "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
@@ -80,7 +83,7 @@ class Person(db.Model):
                                     canonicalise_twitter_id(self.twitter_id)),
             "mainly_a": self.mainly_a,
             "availability": self.availability,
-            "age": int(self.age)
+            "age": format_age(self.age)
             }
 
 
