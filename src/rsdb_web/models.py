@@ -9,7 +9,7 @@ from rsdb_web import db
 import phonenum
 
 class Person(db.Model):
-    __tablename__ = "people"
+    __tablename__ = "people_aged"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -24,6 +24,7 @@ class Person(db.Model):
     twitter_id = db.Column("twitter", db.String(45))
     mainly_a = db.Column(db.String(50))
     availability = db.Column(db.String(50))
+    age = db.Column(db.Integer)
     
     def __init__(self, id, name, email, 
                  telno, no_more_email,
@@ -78,7 +79,8 @@ class Person(db.Model):
             "twitter": hash_or_null("twitter_id", 
                                     canonicalise_twitter_id(self.twitter_id)),
             "mainly_a": self.mainly_a,
-            "availability": self.availability
+            "availability": self.availability,
+            "age": self.age
             }
 
 
