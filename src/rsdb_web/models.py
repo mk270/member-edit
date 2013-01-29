@@ -80,7 +80,7 @@ class Person(db.Model):
                                     canonicalise_twitter_id(self.twitter_id)),
             "mainly_a": self.mainly_a,
             "availability": self.availability,
-            "age": self.age
+            "age": int(self.age)
             }
 
 
