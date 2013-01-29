@@ -22,11 +22,14 @@ class Person(db.Model):
     notes = db.Column(db.Text)
     github_id = db.Column(db.String(100))
     twitter_id = db.Column("twitter", db.String(45))
+    mainly_a = db.Column(db.String(50))
+    availability = db.Column(db.String(50))
     
     def __init__(self, id, name, email, 
                  telno, no_more_email,
                  birth_year, postcode, city,
-                 notes, github_id, twitter_id):
+                 notes, github_id, twitter_id,
+                 mainly_a, availability):
         self.id = id
         self.name = name
         self.email = email
@@ -38,6 +41,8 @@ class Person(db.Model):
         self.notes = notes
         self.github_id = github_id
         self.twitter_id = twitter_id
+        self.mainly_a = mainly_a
+        self.availability = availability
 
     def __repr__(self):
         return '<Person %r>' % self.id
@@ -63,7 +68,9 @@ class Person(db.Model):
             "city": self.city,
             "notes": self.notes,
             "github":  hash_or_null("github_id",  self.github_id),
-            "twitter": hash_or_null("twitter_id", self.twitter_id)
+            "twitter": hash_or_null("twitter_id", self.twitter_id),
+            "mainly_a": self.mainly_a,
+            "availability": self.availability
             }
 
 
