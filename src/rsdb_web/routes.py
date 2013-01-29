@@ -100,7 +100,7 @@ def make_list(cls, cls_name, order_keys):
 @app.route('/')
 @htauth.authenticated
 def people():
-    return make_list(Person, "person", [ "name", "email", "telno" ])
+    return make_list(Person, "person", [ "name", "email", "telno", "twitter_id" ])
 
 @app.route('/centres')
 @htauth.authenticated
