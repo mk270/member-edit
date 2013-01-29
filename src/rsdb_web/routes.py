@@ -84,12 +84,8 @@ def people():
     cls = Person
     cls_name = "person"
 
-    orders = {
-        "name": cls.name,
-        "id": cls.id,
-        "email": cls.email,
-        "telno": cls.telno
-        }
+    keys = [ "name", "id", "email", "telno" ]
+    orders = dict([ (i, getattr(cls, i)) for i in keys ])
 
     order_str = request.args.get('order', None)
 
