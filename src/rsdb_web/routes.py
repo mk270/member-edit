@@ -77,15 +77,8 @@ def person(person_id):
             "person": Person.query.filter(Person.id==person_id).first().to_dict()
             })
 
-
-@app.route('/')
-@htauth.authenticated
-def people():
-    cls = Person
-    cls_name = "person"
-
-    keys = [ "name", "id", "email", "telno" ]
-    orders = dict([ (i, getattr(cls, i)) for i in keys ])
+def make_list(cls, cls_name, order_keys):
+    orders = dict([ (i, getattr(cls, i)) for i in order_keys ])
 
     order_str = request.args.get('order', None)
 
@@ -101,10 +94,13 @@ def people():
             }
     return render(data)
 
+@app.route('/')
+@htauth.authenticated
+def people():
+    return make_list(Person, "person", [ "name", "id", "email", "telno" ])
+
 @app.route('/centres')
 @htauth.authenticated
 def centres():
-    return render({
-            "centre_list": True,
-            "centre": [ i.to_dict() for i in Centre.query.all() ]
-            })
+    return make_list(Centre, "centre", [ "name", "id", "city", "email" ])
+
