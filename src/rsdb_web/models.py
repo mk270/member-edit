@@ -60,6 +60,7 @@ class Person(db.Model):
             return s.title()
         def canonicalise_twitter_id(s):
             if s is None: return None
+            if s == "": return None
             if s[0] == '@': return s[1:]
             return s
         def none_to_null(s):
