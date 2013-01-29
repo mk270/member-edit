@@ -50,7 +50,7 @@ class Person(db.Model):
                 return [ { field_name : s } ]
         def title_or_none(s):
             if s is None:
-                return None
+                return ""
             return s.title()
         return { 
             "name": title_or_none(self.name),
