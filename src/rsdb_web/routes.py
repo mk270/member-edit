@@ -81,24 +81,27 @@ def person(person_id):
 @app.route('/')
 @htauth.authenticated
 def people():
+    cls = Person
+    cls_name = "person"
+
     orders = {
-        "name": Person.name,
-        "id": Person.id,
-        "email": Person.email,
-        "phone": Person.telno
+        "name": cls.name,
+        "id": cls.id,
+        "email": cls.email,
+        "phone": cls.telno
         }
 
     order_str = request.args.get('order', None)
 
     if order_str not in orders:
-        q = Person.query.all()
+        q = cls.query.all()
     else:
-        q = Person.query.order_by(orders[order_str])
+        q = cls.query.order_by(orders[order_str])
 
     data = {
-            "person_list": True,
-            "person_count": Person.query.count(),
-            "person": [ i.to_dict() for i in q ]
+            (cls_name + "_list"): True,
+            (cls_name + "_count"): cls.query.count(),
+             cls_name: [ i.to_dict() for i in q ]
             }
     return render(data)
 
