@@ -26,12 +26,15 @@ class Person(db.Model):
     availability = db.Column(db.String(50))
     age = db.Column(db.Integer)
     mentor = db.Column(db.Boolean)
-    
+    yrser = db.Column(db.Boolean)
+    yrs_current = db.Column(db.Boolean)
+
     def __init__(self, id, name, email, 
                  telno, no_more_email,
                  birth_year, postcode, city,
                  notes, github_id, twitter_id,
-                 mainly_a, availability, mentor):
+                 mainly_a, availability, age, mentor,
+                 yrser, yrs_current):
         self.id = id
         self.name = name
         self.email = email
@@ -45,7 +48,10 @@ class Person(db.Model):
         self.twitter_id = twitter_id
         self.mainly_a = mainly_a
         self.availability = availability
+        self.age = age
         self.mentor = mentor
+        self.yrser = yrser
+        self.yrs_current = yrs_current
 
     def __repr__(self):
         return '<Person %r>' % self.id
@@ -70,9 +76,14 @@ class Person(db.Model):
             return s
         def format_age(a):
             if isinstance(a, float): return int(a)
-            return "Unknown"
+            if a is None: return None
+            return int(a)
         def format_bool_true(b):
             return bool(b)
+        def yrs_status(current, member):
+            if not member: return "Not a YRS member"
+            if not current: return "YRS Alumnus"
+            return "Current YRSer"
         return { 
             "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
@@ -89,7 +100,9 @@ class Person(db.Model):
             "mainly_a": self.mainly_a,
             "availability": self.availability,
             "age": format_age(self.age),
-            "mentor": format_bool_true(self.mentor)
+            "mentor": format_bool_true(self.mentor),
+            "yrser": self.yrser,
+            "yrs_status": yrs_status(self.yrs_current, self.yrser)
             }
 
 
