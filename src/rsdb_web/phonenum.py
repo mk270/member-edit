@@ -12,7 +12,6 @@ def canonicalise(s):
     groups = []
     i = 0
     while True:
-        print i
         start = len(s) - i - 4
         if start < 0:
             start = 0
