@@ -83,6 +83,7 @@
 		  <th><a href="?order=name">Name</a></th>
 		  <th><a href="?order=email">Email</a></th>
 		  <th><a href="?order=telno">Phone</a></th>
+		  <th><a href="?order=twitter_id">Twitter handle</a></th>
 		</thead>
 		<tbody>
 		  {{ #person }}
@@ -92,10 +93,13 @@
 			<td>{{ name }}</td>
 			<td>
 			  {{ #email }}
-			  {{ email_address }}
+			  <a href="mailto:{{ email_address }}">{{ email_address }}</a>
 			  {{ /email }}
 			</td>
 			<td>{{ telno }}</td>
+			<td>{{ #twitter }}
+			<a href="http://twitter.com/{{ twitter_id }}">@{{ twitter_id }}</a>
+			{{ /twitter }}</td>
 		  </tr>
 		  {{ /person }}
 		</tbody>

@@ -57,6 +57,10 @@ class Person(db.Model):
             if s is None:
                 return ""
             return s.title()
+        def canonicalise_twitter_id(s):
+            if s is None: return None
+            if s[0] == '@': return s[1:]
+            return s
         return { 
             "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
@@ -68,7 +72,8 @@ class Person(db.Model):
             "city": self.city,
             "notes": self.notes,
             "github":  hash_or_null("github_id",  self.github_id),
-            "twitter": hash_or_null("twitter_id", self.twitter_id),
+            "twitter": hash_or_null("twitter_id", 
+                                    canonicalise_twitter_id(self.twitter_id)),
             "mainly_a": self.mainly_a,
             "availability": self.availability
             }
