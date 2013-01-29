@@ -61,10 +61,13 @@ class Person(db.Model):
             if s is None: return None
             if s[0] == '@': return s[1:]
             return s
+        def none_to_null(s):
+            if s is None: return ""
+            return s
         return { 
             "name": title_or_none(self.name),
             "email": hash_or_null("email_address", self.email),
-            "telno": phonenum.canonicalise(self.telno),
+            "telno": phonenum.canonicalise(none_to_null(self.telno)),
             "id": self.id,
             "no_more_email": self.no_more_email,
             "birth_year": self.birth_year,
