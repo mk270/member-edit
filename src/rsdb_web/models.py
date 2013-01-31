@@ -28,13 +28,14 @@ class Person(db.Model):
     mentor = db.Column(db.Boolean)
     yrser = db.Column(db.Boolean)
     yrs_current = db.Column(db.Boolean)
+    dob = db.Column(db.Date)
 
     def __init__(self, id, name, email, 
                  telno, no_more_email,
                  birth_year, postcode, city,
                  notes, github_id, twitter_id,
                  mainly_a, availability, age, mentor,
-                 yrser, yrs_current):
+                 yrser, yrs_current, dob):
         self.id = id
         self.name = name
         self.email = email
@@ -52,6 +53,7 @@ class Person(db.Model):
         self.mentor = mentor
         self.yrser = yrser
         self.yrs_current = yrs_current
+        self.dob = dob
 
     def __repr__(self):
         return '<Person %r>' % self.id
@@ -89,20 +91,21 @@ class Person(db.Model):
             "email": hash_or_null("email_address", self.email),
             "telno": phonenum.canonicalise(none_to_null(self.telno)),
             "id": self.id,
-            "no_more_email": self.no_more_email,
+            "no_more_email": none_to_null(self.no_more_email),
             "birth_year": self.birth_year,
-            "postcode": self.postcode,
-            "city": self.city,
-            "notes": self.notes,
+            "postcode": none_to_null(self.postcode),
+            "city": none_to_null(self.city),
+            "notes": none_to_null(self.notes),
             "github":  hash_or_null("github_id",  self.github_id),
             "twitter": hash_or_null("twitter_id", 
                                     canonicalise_twitter_id(self.twitter_id)),
-            "mainly_a": self.mainly_a,
-            "availability": self.availability,
+            "mainly_a": none_to_null(self.mainly_a),
+            "availability": none_to_null(self.availability),
             "age": format_age(self.age),
             "mentor": format_bool_true(self.mentor),
-            "yrser": self.yrser,
-            "yrs_status": yrs_status(self.yrs_current, self.yrser)
+            "yrser": none_to_null(self.yrser),
+            "yrs_status": yrs_status(self.yrs_current, self.yrser),
+            "dob": self.dob
             }
 
 
