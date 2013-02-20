@@ -21,6 +21,7 @@ def start(config):
     auth_realm    = config.get('server', 'http_auth_realm')
     secret_key    = config.get('server', 'secret_key')
     port          = config.getint('server', 'port')
+    debug         = config.getboolean('server', 'debug')
     
     
     app.config['X-NAME'] = name
@@ -29,4 +30,4 @@ def start(config):
     app.config['HTAUTH_HTPASSWD_PATH'] = htpasswd_file
     app.secret_key = secret_key
 
-    app.run(debug=True, port=port)
+    app.run(debug=debug, port=port)

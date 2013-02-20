@@ -4,6 +4,7 @@ secret_key: 2-49ru0g9hqwghqwghqj420hj240hq40fqh4q2fs
 htpasswd_file: htpasswd
 http_auth_realm: My Database web app
 port: 5000
+debug: true
 
 [database]
 db_name: live_db
