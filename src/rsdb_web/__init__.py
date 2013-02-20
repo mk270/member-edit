@@ -20,7 +20,8 @@ def start(config):
     htpasswd_file = config.get('server', 'htpasswd_file')
     auth_realm    = config.get('server', 'http_auth_realm')
     secret_key    = config.get('server', 'secret_key')
-    port          = int(config.get('server', 'port'))
+    port          = config.getint('server', 'port')
+    
     
     app.config['X-NAME'] = name
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///%s' % db_name
