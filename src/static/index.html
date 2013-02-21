@@ -92,7 +92,8 @@
 		  <div class="control-group">
 			<label class="control-label" for="inputEmail">Born since</label>
 			<div class="controls">
-			  <select name="year_of_birth">
+			  <select name="year_of_birth_since">
+				<option></option>
 				{{ #years }}
 				<option>{{ year }}</option>
 				{{ /years }}
@@ -103,6 +104,7 @@
 			<label class="control-label" for="inputEmail">Born before</label>
 			<div class="controls">
 			  <select name="year_of_birth_before">
+				<option></option>
 				{{ #years }}
 				<option>{{ year }}</option>
 				{{ /years }}
@@ -111,8 +113,7 @@
 		  </div>
 		</div>
 		<div class="modal-footer">
-		  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		  <button class="btn btn-primary">Submit</button>
+		  <button class="btn btn-primary">Search</button>
 		</div>
 	  </form>
 	</div>
