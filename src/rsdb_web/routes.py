@@ -81,7 +81,7 @@ def person(person_id):
             "person": Person.query.filter(Person.id==person_id).first().to_dict()
             })
 
-def make_list(cls, cls_name, order_keys):
+def make_base_query(cls, order_keys):
     orders = dict([ (i, getattr(cls, i)) for i in order_keys ])
 
     order_str = request.args.get('order', None)
@@ -90,7 +90,10 @@ def make_list(cls, cls_name, order_keys):
         q = cls.query.all()
     else:
         q = cls.query.order_by(orders[order_str])
+    return q
 
+def make_list(cls, cls_name, order_keys):
+    q = make_base_query(cls, order_keys)
     data = {
         (cls_name + "_list"): True,
         "summary": { 
@@ -103,11 +106,13 @@ def make_list(cls, cls_name, order_keys):
 
 @app.route('/')
 @htauth.authenticated
-def people():
-    return make_list(Person, "person", [ "name", "email", "telno", "twitter_id" ])
+def people(**kwargs):
+    order_keys = [ "name", "email", "telno", "twitter_id" ]
+    return make_list(Person, "person", order_keys)
 
 @app.route('/centres')
 @htauth.authenticated
 def centres():
-    return make_list(Centre, "centre", [ "name", "city", "email" ])
+    order_keys = [ "name", "city", "email" ]
+    return make_list(Centre, "centre", order_keys)
 
