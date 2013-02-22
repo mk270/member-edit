@@ -81,19 +81,25 @@ def person(person_id):
             "person": Person.query.filter(Person.id==person_id).first().to_dict()
             })
 
-def make_base_query(cls, order_keys):
+def make_order(cls, order_keys):
     orders = dict([ (i, getattr(cls, i)) for i in order_keys ])
 
     order_str = request.args.get('order', None)
 
     if order_str not in orders:
-        q = cls.query.all()
+        return lambda q: q
     else:
-        q = cls.query.order_by(orders[order_str])
-    return q
+        return lambda q: q.order_by(orders[order_str])
 
-def make_list(cls, cls_name, order_keys):
-    q = make_base_query(cls, order_keys)
+def transform_query(cls, order_keys, filters):
+    query = cls.query
+    filters.append(make_order(cls, order_keys))
+    for f in filters:
+        query = f(query)
+    return query
+
+def make_list(cls, cls_name, order_keys, filters):
+    q = transform_query(cls, order_keys, filters)
     data = {
         (cls_name + "_list"): True,
         "summary": { 
@@ -107,12 +113,17 @@ def make_list(cls, cls_name, order_keys):
 @app.route('/')
 @htauth.authenticated
 def people(**kwargs):
+    filters = []
+    if "name" in request.args:
+        name = request.args.get('name')
+        filters.append(lambda q: q.filter(Person.name == name))
     order_keys = [ "name", "email", "telno", "twitter_id" ]
-    return make_list(Person, "person", order_keys)
+    return make_list(Person, "person", order_keys, filters)
 
 @app.route('/centres')
 @htauth.authenticated
 def centres():
+    filters = []
     order_keys = [ "name", "city", "email" ]
-    return make_list(Centre, "centre", order_keys)
+    return make_list(Centre, "centre", order_keys, filters)
 
