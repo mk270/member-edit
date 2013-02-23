@@ -114,14 +114,20 @@ def make_list(cls, cls_name, order_keys, filters):
 @htauth.authenticated
 def people(**kwargs):
     filters = []
-    if "name" in request.args:
-        name = request.args.get('name')
-        if name != "":
-            filters.append(lambda q: q.filter(Person.name == name))
-    if "location" in request.args:
-        location = request.args.get('location')
-        if location != "":
-            filters.append(lambda q: q.filter(Person.city == location))
+    search_terms = [
+        ("name", "name"),
+        ("location", "city")
+        ]
+
+    def add_filter(url_arg, attribute):
+        if url_arg in request.args:
+            val = request.args.get(url_arg)
+            if val != "":
+                match = getattr(Person, attribute)
+                filters.append(lambda q: q.filter(match == val))
+
+    [ add_filter(url_arg, attribute) for url_arg, attribute in search_terms ]
+            
     order_keys = [ "name", "email", "telno", "twitter_id" ]
     return make_list(Person, "person", order_keys, filters)
 
