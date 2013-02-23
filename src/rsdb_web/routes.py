@@ -117,6 +117,7 @@ def people(**kwargs):
     search_terms = [
         ("name", "name"),
         ("location", "city")
+        ("skills", "notes")
         ]
 
     def add_filter(url_arg, attribute):
