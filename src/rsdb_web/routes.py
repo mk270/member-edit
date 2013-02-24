@@ -7,6 +7,7 @@
 
 import sys
 import datetime
+import operator
 
 from flask import request, render_template, flash, redirect, url_for, get_flashed_messages, Flask, g
 from flask.ext import htauth
@@ -112,8 +113,18 @@ def make_list(cls, cls_name, order_keys, filters):
 
 @app.route('/')
 @htauth.authenticated
-def people(**kwargs):
+def people():
     filters = []
+
+    arg_names = [ "name", "location", "skills", "year_of_birth_since",
+                  "year_of_birth_before" ]
+    args = {}
+    for arg in arg_names:
+        if arg in request.args:
+            val = request.args.get(arg)
+            if val != "":
+                args[arg] = val
+
     search_terms = [
         ("name", "name"),
         ("location", "city"),
@@ -121,14 +132,24 @@ def people(**kwargs):
         ]
 
     def add_filter(url_arg, attribute):
-        if url_arg in request.args:
-            val = request.args.get(url_arg)
+        if url_arg in args:
+            val = args.get(url_arg)
             if val != "":
                 match = getattr(Person, attribute)
-                filters.append(lambda q: q.filter(match == val))
+                filters.append(lambda q: q.filter(match.contains(val)))
 
     [ add_filter(url_arg, attribute) for url_arg, attribute in search_terms ]
-            
+
+    if "year_of_birth_since" in args:
+        yob_cmp = int(args.get("year_of_birth_since"))
+        yob_cmp = datetime.datetime(yob_cmp, 1, 1)
+        filters.append(lambda q: q.filter(operator.__le__(yob_cmp, Person.dob)))
+
+    if "year_of_birth_before" in args:
+        yob_cmp = int(args.get("year_of_birth_before"))
+        yob_cmp = datetime.datetime(yob_cmp, 1, 1)
+        filters.append(lambda q: q.filter(operator.__ge__(yob_cmp, Person.dob)))
+                       
     order_keys = [ "name", "email", "telno", "twitter_id" ]
     return make_list(Person, "person", order_keys, filters)
 
