@@ -116,7 +116,7 @@ def people(**kwargs):
     filters = []
     search_terms = [
         ("name", "name"),
-        ("location", "city")
+        ("location", "city"),
         ("skills", "notes")
         ]
 
