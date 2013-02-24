@@ -140,15 +140,17 @@ def people():
 
     [ add_filter(url_arg, attribute) for url_arg, attribute in search_terms ]
 
-    if "year_of_birth_since" in args:
-        yob_cmp = int(args.get("year_of_birth_since"))
-        yob_cmp = datetime.datetime(yob_cmp, 1, 1)
-        filters.append(lambda q: q.filter(operator.__le__(yob_cmp, Person.dob)))
+    yob_comparisons = [
+        ("year_of_birth_since", operator.__le__),
+        ("year_of_birth_before", operator.__ge__)
+        ]
 
-    if "year_of_birth_before" in args:
-        yob_cmp = int(args.get("year_of_birth_before"))
-        yob_cmp = datetime.datetime(yob_cmp, 1, 1)
-        filters.append(lambda q: q.filter(operator.__ge__(yob_cmp, Person.dob)))
+    def yob_comparison(key, cmp_f):
+        if key in args:
+            yob_cmp = datetime.datetime(int(args.get(key)), 1, 1)
+            filters.append(lambda q: q.filter(cmp_f(yob_cmp, Person.dob)))
+
+    [ yob_comparison(key, cmp_f) for key, cmp_f in yob_comparisons ]
                        
     order_keys = [ "name", "email", "telno", "twitter_id" ]
     return make_list(Person, "person", order_keys, filters)
